@@ -1,34 +1,25 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+// src/extension.ts
 import * as vscode from 'vscode';
-import { TestCasePanel } from './panel';
+import { TestCasePanelProvider } from './TestCasePanelProvider';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-// export function activate(context: vscode.ExtensionContext) {
-
-// 	// Use the console to output diagnostic information (console.log) and errors (console.error)
-// 	// This line of code will only be executed once when your extension is activated
-// 	console.log('Congratulations, your extension "smartq" is now active!');
-
-// 	// The command has been defined in the package.json file
-// 	// Now provide the implementation of the command with registerCommand
-// 	// The commandId parameter must match the command field in package.json
-// 	const disposable = vscode.commands.registerCommand('smartq.helloWorld', () => {
-// 		// The code you place here will be executed every time your command is executed
-// 		// Display a message box to the user
-// 		vscode.window.showInformationMessage('Hello World from smartQ!');
-// 	});
-
-// 	context.subscriptions.push(disposable);
-// }
 export function activate(context: vscode.ExtensionContext) {
-	context.subscriptions.push(
-			vscode.commands.registerCommand('smartq.openTestCaseGenerator', () => {
-					TestCasePanel.createOrShow(context);
-			})
-	);
+  const provider = new TestCasePanelProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      TestCasePanelProvider.viewType,
+      provider
+    )
+  );
+
+  // Register the command to open the Test Case Generator
+  context.subscriptions.push(
+    vscode.commands.registerCommand('smartq.openTestCaseGenerator', () => {
+      // The webview will be shown automatically in the Activity Bar
+      vscode.commands.executeCommand('workbench.view.extension.testCaseGenerator');
+    })
+  );
+
+  console.log('smartQa Copilot extension is now active!');
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}

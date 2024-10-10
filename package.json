@@ -9,9 +9,27 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": ["onCommand:openTestCaseGenerator"],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "testCaseGenerator",
+          "title": "Test Case Generator",
+          "icon": "media/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "testCaseGenerator": [
+        {
+          "id": "testCasePanelView",
+          "name": "Test Case Generator",
+          "contextualTitle": "Test Case Generator",
+          "type": "webview"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "smartq.openTestCaseGenerator",
